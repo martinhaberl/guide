@@ -1,6 +1,5 @@
-package de.martinhaberl.safariguide.author.control;
+package de.martinhaberl.safariguide.author;
 
-import de.martinhaberl.safariguide.author.boundary.AuthorRequestDTO;
 import de.martinhaberl.safariguide.author.boundary.AuthorResponseDTO;
 import de.martinhaberl.safariguide.author.boundary.IAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;

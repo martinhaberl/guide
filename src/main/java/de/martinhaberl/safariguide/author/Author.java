@@ -1,4 +1,4 @@
-package de.martinhaberl.safariguide.author.control;
+package de.martinhaberl.safariguide.author;
 
 import lombok.Getter;
 import lombok.Setter;

@@ -1,4 +1,4 @@
-package de.martinhaberl.safariguide.author.control;
+package de.martinhaberl.safariguide.author;
 
 import de.martinhaberl.safariguide.author.boundary.AuthorController;
 import de.martinhaberl.safariguide.author.boundary.AuthorRequestDTO;
@@ -24,20 +24,18 @@ public class AuthorControllerUnitTest {
     @Test
     void createAuthorReturnsResponseDTOwithNameAndEMail() {
 
-        IAuthorService iAuthorService = mock(IAuthorService.class);
-        AuthorController authorController = new AuthorController(iAuthorService);
-        AuthorRequestDTO authorRequestDTO = new AuthorRequestDTO("Ron Weasley", "iron.weasle@hogwards.com");
+        IAuthorService iAuthorServiceMock = mock(IAuthorService.class);
+        AuthorController authorController = new AuthorController(iAuthorServiceMock);
+        AuthorRequestDTO authorRequestDTO = new AuthorRequestDTO("Ron Weasley", "iron.weasle@hogwards.edu");
 
         UUID uuid = UUID.randomUUID();
-        when(iAuthorService.createAuthor(anyString(), anyString())).thenReturn(new AuthorResponseDTO(uuid,"Ron Weasley","iron.weasle@hogwards.edu"));
+        when(iAuthorServiceMock.createAuthor(anyString(), anyString())).thenReturn(new AuthorResponseDTO(uuid,"Ron Weasley","iron.weasle@hogwards.edu"));
 
         AuthorResponseDTO actualAuthorResponseDTO = authorController.createAuthor(authorRequestDTO);
 
         assertNotNull(actualAuthorResponseDTO);
         assertEquals(uuid, actualAuthorResponseDTO.id());
-        assertEquals("Ron Weasley", actualAuthorResponseDTO.name());
-        assertEquals("iron.weasle@hogwards.edu", actualAuthorResponseDTO.email());
-
+        assertEquals(authorRequestDTO.name(), actualAuthorResponseDTO.name());
+        assertEquals(authorRequestDTO.email(), actualAuthorResponseDTO.email());
     }
-
 }

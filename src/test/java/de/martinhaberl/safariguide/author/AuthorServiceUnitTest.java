@@ -1,4 +1,4 @@
-package de.martinhaberl.safariguide.author.control;
+package de.martinhaberl.safariguide.author;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
