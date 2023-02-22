@@ -1,11 +1,11 @@
 package de.martinhaberl.safariguide.author.control;
 
 import de.martinhaberl.safariguide.author.boundary.AuthorController;
+import de.martinhaberl.safariguide.author.boundary.AuthorRequestDTO;
 import de.martinhaberl.safariguide.author.boundary.AuthorResponseDTO;
 import de.martinhaberl.safariguide.author.boundary.IAuthorService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.UUID;
 
@@ -22,17 +22,22 @@ public class AuthorControllerUnitTest {
     }
 
     @Test
-    void createAuthor() {
+    void createAuthorReturnsResponseDTOwithNameAndEMail() {
 
         IAuthorService iAuthorService = mock(IAuthorService.class);
         AuthorController authorController = new AuthorController(iAuthorService);
-        when(iAuthorService.createAuthor(anyString(), anyString())).thenReturn(new AuthorResponseDTO(UUID.randomUUID(),"Ron Weasley","iron.weasle@hogwards.edu"));
+        AuthorRequestDTO authorRequestDTO = new AuthorRequestDTO("Ron Weasley", "iron.weasle@hogwards.com");
 
-        AuthorResponseDTO actualAuthorResponseDTO = authorController.createAuthor("Ron Weasley", "iron.weasle@hogwards.com");
+        UUID uuid = UUID.randomUUID();
+        when(iAuthorService.createAuthor(anyString(), anyString())).thenReturn(new AuthorResponseDTO(uuid,"Ron Weasley","iron.weasle@hogwards.edu"));
+
+        AuthorResponseDTO actualAuthorResponseDTO = authorController.createAuthor(authorRequestDTO);
 
         assertNotNull(actualAuthorResponseDTO);
+        assertEquals(uuid, actualAuthorResponseDTO.id());
         assertEquals("Ron Weasley", actualAuthorResponseDTO.name());
         assertEquals("iron.weasle@hogwards.edu", actualAuthorResponseDTO.email());
 
     }
+
 }
