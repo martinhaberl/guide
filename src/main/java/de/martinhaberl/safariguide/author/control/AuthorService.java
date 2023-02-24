@@ -8,19 +8,18 @@ import org.springframework.stereotype.Service;
 @Service
 public class AuthorService implements IAuthorService {
 
-
-    private AuthorEntityRepository authorEntityRepository;
+    private final AuthorEntityRepository authorEntityRepository;
 
     @Autowired
     public AuthorService(AuthorEntityRepository authorEntityRepository) {
-
         this.authorEntityRepository = authorEntityRepository;
     }
 
-
     @Override
     public Author createAuthor(String name, String emailAddress) {
-        AuthorEntity savedAuthorEntity = authorEntityRepository.save(new AuthorEntity(name, emailAddress));
+        AuthorEntity authorEntity = new AuthorEntity(name, emailAddress);
+        AuthorEntity savedAuthorEntity = authorEntityRepository.save(authorEntity);
+
         return toAuthor(savedAuthorEntity);
     }
 
