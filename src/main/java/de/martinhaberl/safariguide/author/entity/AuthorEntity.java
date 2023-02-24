@@ -1,34 +1,32 @@
 package de.martinhaberl.safariguide.author.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.EntityListeners;
-import jakarta.persistence.Id;
 import jakarta.persistence.Column;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+import jakarta.persistence.Version;
+import lombok.Data;
 import lombok.Getter;
-import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
-import org.springframework.data.annotation.Version;
-import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.Instant;
+import java.util.Objects;
 import java.util.UUID;
 
-@Entity @EntityListeners(AuditingEntityListener.class)
-@Getter @Setter
+@Entity
+//@EntityListeners(AuditingEntityListener.class)
+@Getter
 public class AuthorEntity {
-    @CreatedDate
+    @CreationTimestamp
     Instant createdAt;
-    @LastModifiedDate
+    @UpdateTimestamp
     Instant modifiedAt;
     @Version
     int version;
     @Column
-    @NotBlank String name;
+    String name;
     @Column
-    @Email String email;
+    String emailAddress;
     @Id
     private UUID id;
 
@@ -36,12 +34,22 @@ public class AuthorEntity {
         this.id = UUID.randomUUID();
     }
 
-    public AuthorEntity(UUID id, Instant createdAt, Instant modifiedAt, int version, String name, String email) {
+    public AuthorEntity(String name, String emailAddress) {
         this.id = UUID.randomUUID();
-        this.createdAt = createdAt;
-        this.modifiedAt = modifiedAt;
-        this.version = version;
         this.name = name;
-        this.email = email;
+        this.emailAddress = emailAddress;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        AuthorEntity that = (AuthorEntity) o;
+        return version == that.version && Objects.equals(createdAt, that.createdAt) && Objects.equals(modifiedAt, that.modifiedAt) && Objects.equals(name, that.name) && Objects.equals(emailAddress, that.emailAddress) && Objects.equals(id, that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(createdAt, modifiedAt, version, name, emailAddress, id);
     }
 }
