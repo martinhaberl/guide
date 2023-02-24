@@ -7,9 +7,10 @@ import de.martinhaberl.safariguide.author.entity.AuthorEntityRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -27,7 +28,6 @@ class AuthorServiceUnitTest {
         AuthorService authorService = new AuthorService(authorEntityRepositoryMock);
         AuthorEntity authorEntityStub = new AuthorEntity("Ron Weasley", "iron.weasel@hogwards.edu");
 
-        //when(authorEntityRepositoryMock.save(authorEntity)).thenReturn(authorEntityStub);
         when(authorEntityRepositoryMock.save(any())).thenReturn(authorEntityStub);
 
         Author actualAuthor = authorService.createAuthor("Ron Weasley", "iron.weasel@hogwards.edu");
@@ -36,5 +36,23 @@ class AuthorServiceUnitTest {
         assertThat(actualAuthor).isInstanceOf(Author.class);
         assertThat(actualAuthor.getId()).isNotNull();
         assertEquals("Ron Weasley",actualAuthor.getName());
+    }
+
+    @Test
+    void getAuthorsReturnsListOfAuthors() {
+
+        AuthorEntityRepository authorEntityRepositoryMock = mock(AuthorEntityRepository.class);
+        AuthorService authorService = new AuthorService(authorEntityRepositoryMock);
+        AuthorEntity authorEntityStub = new AuthorEntity("Ron Weasley", "iron.weasel@hogwards.edu");
+
+        when(authorEntityRepositoryMock.findAll()).thenReturn(List.of(authorEntityStub));
+
+        List<Author> actualListOfAuthor = authorService.getAuthors();
+
+        assertNotNull(actualListOfAuthor);
+        assertThat(actualListOfAuthor.size()).isEqualTo(1);
+        assertEquals(1, actualListOfAuthor.size());
+        assertThat(actualListOfAuthor.get(0).getId()).isNotNull();
+        assertEquals("Ron Weasley",actualListOfAuthor.get(0).getName());
     }
 }

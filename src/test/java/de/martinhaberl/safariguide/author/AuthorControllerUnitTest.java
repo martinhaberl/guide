@@ -9,6 +9,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +26,6 @@ public class AuthorControllerUnitTest {
 
     @Test
     void createAuthorReturnsResponseDTOwithNameAndEMail() {
-
         IAuthorService iAuthorServiceMock = mock(IAuthorService.class);
         AuthorController authorController = new AuthorController(iAuthorServiceMock);
         AuthorRequestDTO authorRequestDTO = new AuthorRequestDTO("Ron Weasley", "iron.weasle@hogwards.edu");
@@ -41,5 +41,25 @@ public class AuthorControllerUnitTest {
         assertEquals(uuid, actualAuthorResponseDTO.id());
         assertEquals(authorRequestDTO.name(), actualAuthorResponseDTO.name());
         assertEquals(authorRequestDTO.emailAddress(), actualAuthorResponseDTO.emailAddress());
+    }
+
+    @Test
+    void getRequestforAuthorsReturnsListOfAuthors() {
+        IAuthorService iAuthorServiceMock = mock(IAuthorService.class);
+        AuthorController authorController = new AuthorController(iAuthorServiceMock);
+        AuthorRequestDTO authorRequestDTO = new AuthorRequestDTO("Ron Weasley", "iron.weasle@hogwards.edu");
+
+        UUID uuid = UUID.randomUUID();
+        Author author = new Author(uuid, Instant.now(), Instant.now(), 0,"Ron Weasley","iron.weasle@hogwards.edu");
+
+        when(iAuthorServiceMock.getAuthors()).thenReturn(List.of(author));
+
+        List<AuthorResponseDTO> listOfAuthors = authorController.getAuthors();
+
+        assertNotNull(listOfAuthors);
+        assertEquals(1, listOfAuthors.size());
+        assertEquals(uuid, listOfAuthors.get(0).id());
+        assertEquals("Ron Weasley", listOfAuthors.get(0).name());
+
     }
 }

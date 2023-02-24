@@ -4,10 +4,9 @@ import de.martinhaberl.safariguide.author.control.Author;
 import de.martinhaberl.safariguide.author.control.IAuthorService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 public class AuthorController {
@@ -25,7 +24,12 @@ public class AuthorController {
         return toResponseDTO(iAuthorService.createAuthor(authorRequestDTO.name(), authorRequestDTO.emailAddress()));
     }
 
-    private AuthorResponseDTO toResponseDTO(Author author) {
+    @GetMapping("/authors")
+    public List<AuthorResponseDTO> getAuthors() {
+        return iAuthorService.getAuthors().stream().map(AuthorController::toResponseDTO).toList();
+    }
+
+    private static AuthorResponseDTO toResponseDTO(Author author) {
         return new AuthorResponseDTO(author.getId(), author.getName(), author.getEmailAddress());
     }
 }
