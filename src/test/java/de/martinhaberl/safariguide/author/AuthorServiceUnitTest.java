@@ -28,7 +28,7 @@ class AuthorServiceUnitTest {
         AuthorService authorService = new AuthorService(authorEntityRepositoryMock);
         AuthorEntity authorEntityStub = new AuthorEntity("Ron Weasley", "iron.weasel@hogwards.edu");
 
-        when(authorEntityRepositoryMock.save(any())).thenReturn(authorEntityStub);
+        when(authorEntityRepositoryMock.save(any(AuthorEntity.class))).thenReturn(authorEntityStub);
 
         Author actualAuthor = authorService.createAuthor("Ron Weasley", "iron.weasel@hogwards.edu");
 
@@ -36,6 +36,7 @@ class AuthorServiceUnitTest {
         assertThat(actualAuthor).isInstanceOf(Author.class);
         assertThat(actualAuthor.getId()).isNotNull();
         assertEquals("Ron Weasley",actualAuthor.getName());
+        assertEquals("iron.weasel@hogwards.edu",actualAuthor.getEmailAddress());
     }
 
     @Test
