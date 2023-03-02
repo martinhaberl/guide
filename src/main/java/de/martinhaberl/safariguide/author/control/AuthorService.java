@@ -13,8 +13,8 @@ public class AuthorService implements IAuthorService {
     private final AuthorEntityRepository authorEntityRepository;
 
     @Autowired
-    public AuthorService(AuthorEntityRepository authorEntityRepository) {
-        this.authorEntityRepository = authorEntityRepository;
+    public AuthorService(AuthorEntityRepository injectedAuthorEntityRepository) {
+        this.authorEntityRepository = injectedAuthorEntityRepository;
     }
 
     @Override

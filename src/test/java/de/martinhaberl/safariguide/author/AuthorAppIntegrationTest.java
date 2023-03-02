@@ -1,9 +1,7 @@
 package de.martinhaberl.safariguide.author;
 
-import de.martinhaberl.safariguide.author.boundary.AuthorController;
-import de.martinhaberl.safariguide.author.control.AuthorService;
-import de.martinhaberl.safariguide.author.control.IAuthorService;
 import de.martinhaberl.safariguide.author.entity.AuthorEntityRepository;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -21,35 +19,32 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class AuthorAppIntegrationTest {
 
     @Autowired
-    private MockMvc mockMvc;
-
-    @Autowired
-    AuthorController authorController;
-
-    @Autowired
-    IAuthorService iAuthorService;
-
-    @Autowired
-    AuthorService authorService;
-
+    MockMvc mockMvc;
     @Autowired
     AuthorEntityRepository authorEntityRepository;
+
+    @BeforeEach
+    public void cleanDatabase() {
+        authorEntityRepository.deleteAll();
+    }
+
 
     @Test
     void postRequestToCreateAuthorShouldReturnStatusCreated() throws Exception {
         mockMvc.perform(post("/authors")
-                .content("[{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}]").contentType(MediaType.APPLICATION_JSON))
+                        .content("{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
     }
-
 
 
     @Test
     void getRequestShouldReturnListOfAuthors() throws Exception {
 
         mockMvc.perform(post("/authors")
-                        .content("[{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}]").contentType(MediaType.APPLICATION_JSON))
+                        .content("{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}")
+                        .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
         mockMvc.perform(get("/authors"))

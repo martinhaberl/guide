@@ -11,11 +11,12 @@ import java.util.List;
 @RestController
 public class AuthorController {
 
-    @Autowired
+
     IAuthorService iAuthorService;
 
-    public AuthorController(IAuthorService iAuthorService) {
-        this.iAuthorService = iAuthorService;
+    @Autowired
+    public AuthorController(IAuthorService injectedIAuthorService) {
+        this.iAuthorService = injectedIAuthorService;
     }
 
     @PostMapping("/authors")
