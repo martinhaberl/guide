@@ -32,7 +32,7 @@ public class AuthorAppIntegrationTest {
     @Test
     void postRequestToCreateAuthorShouldReturnStatusCreated() throws Exception {
         mockMvc.perform(post("/authors")
-                        .content("{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}")
+                        .content("{\"name\": \"Jan Nowak\", \"emailAddress\": \"jan@nowak.org\"}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 
@@ -43,7 +43,7 @@ public class AuthorAppIntegrationTest {
     void getRequestShouldReturnListOfAuthors() throws Exception {
 
         mockMvc.perform(post("/authors")
-                        .content("{\"name\": \"Ron Weasley\", \"emailAddress\": \"iron.weasle@hogwards.edu\"}")
+                        .content("{\"name\": \"Jan Nowak\", \"emailAddress\": \"jan@nowak.org\"}")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated());
 

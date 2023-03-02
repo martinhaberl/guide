@@ -4,7 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Version;
-import lombok.Data;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -24,8 +25,10 @@ public class AuthorEntity {
     @Version
     int version;
     @Column
+    @NotBlank
     String name;
     @Column
+    @Email
     String emailAddress;
     @Id
     private UUID id;
